@@ -1,0 +1,19 @@
+{
+  "name": "pegasustechjm",
+  "version": "1.0.0",
+  "description": "Somos una empresa distribuidora de productos tecnológicos de diversas gamas,\r contamos con las marcas Top del mercado a precios accesibles.",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JMWalkman/PegasusTechJM.git"
+  },
+  "author": "José Manuel Muñoz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JMWalkman/PegasusTechJM/issues"
+  },
+  "homepage": "https://github.com/JMWalkman/PegasusTechJM#readme"
+}
