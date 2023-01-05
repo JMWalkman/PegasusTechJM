@@ -1,20 +1,25 @@
 // const { check, validationResult } = require('express-validator');
-const db = require('../../models');
+const { Product } = require('../../database/models');
 // const sequelize = db.sequelize;
 
-const productsController = {
-    'shopRender' : (req, res) => {
-        // res.send('hola mundo');
-        res.send(db.dirname)
-        // res.send(Object.keys(db))
-        // Product.findAll()
-        //     .then(function(productos) {
-        //         res.send("hola mundo");
-        //     })
+module.exports = {
+    shopRender: async (req,res) => {
+        Product.sync({alter: true})
+        await Product.findAll()
+            .then(function(products) {
+                res.send(products)
+                // res.render('products/', products)
+            })
     }
 }
+const shopRender = async (req,res) => {
+    db.Product.findAll()
+        .then(function(products) {
+            res.send(products)
+        })
+}
 
-module.exports = productsController;
+module.exports = shopRender;
 
 // const productShopRender = async (req, res) => {
 //     const [categories, Manufacturers, features] = await Promise.all([
