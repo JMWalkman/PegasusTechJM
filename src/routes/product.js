@@ -3,6 +3,11 @@ const {body} = require('express-validator')//validaciones del form
 const router = express.Router();
 const path = require('path');
 const productController = require('../controllers/productController');
+
+router.get('/', productController.shopRender);
+
+module.exports = router;
+
 // const {
     // productShopRender,
     // productDetailRender,
@@ -26,7 +31,7 @@ const productController = require('../controllers/productController');
 // })
 // const upload = multer({storage:storage})/* definir si se valida la imagen con multer o con expv */
 
-router.get('/', productController.shopRender);
+
 // router.get('/productRegister', productRegisterRender); //renderiza la vista del form
 // router.post('/productRegister', upload.array('imagen'), productCreate); //guarda los datos enviados en el form
 
@@ -36,5 +41,3 @@ router.get('/', productController.shopRender);
 
 // router.get('/productDelete/:id', productDeleteRender)
 // router.post('/productDelete/:id', deleteProduct);
-
-module.exports = router;

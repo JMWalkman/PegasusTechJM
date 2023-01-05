@@ -1,5 +1,3 @@
-const { DataTypes } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
     let alias = 'Product';
     let atributes = {

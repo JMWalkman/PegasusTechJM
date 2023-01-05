@@ -1,15 +1,16 @@
 // const { check, validationResult } = require('express-validator');
-// const { Product, Category, Manufacturers, Features } = require('../../models');
-const db = require('../../models/Index');
-const sequelize = db.sequelize;
+const db = require('../../models');
+// const sequelize = db.sequelize;
 
 const productsController = {
     'shopRender' : (req, res) => {
         // res.send('hola mundo');
-        db.Product.findAll()
-            .then(function(productos) {
-                res.send("hola mundo");
-            })
+        res.send(db.dirname)
+        // res.send(Object.keys(db))
+        // Product.findAll()
+        //     .then(function(productos) {
+        //         res.send("hola mundo");
+        //     })
     }
 }
 
