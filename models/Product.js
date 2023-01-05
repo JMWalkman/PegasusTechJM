@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-    let alias = 'users';
+    let alias = 'Product';
     let atributes = {
         id: { 
             type: DataTypes.INTEGER,
@@ -9,23 +9,17 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             autoIncrement: true
         },
-        nombre: { 
+        name: { 
             type: DataTypes.STRING,
             allowNull: false,
         },
-        email: { 
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-        password: { type: DataTypes.STRING },
     }
     let config = {
-        tableName: 'users',
+        tableName: 'products',
         timestamps: false
     }
 
-    const User = sequelize.define(alias, atributes, config);
+    const Product = sequelize.define(alias, atributes, config);
 
-    return User
+    return Product
 }

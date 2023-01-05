@@ -3,7 +3,8 @@ const router = express.Router();
 
 const {
     registerRender,
-    loginRender
+    loginRender,
+    userCreate
 } = require('../controllers/userController');
 
 // const {
@@ -18,7 +19,7 @@ const {
 // } = require('../controllers/userController');
 
 router.get('/register', registerRender);
-// router.post('/register', userCreate);
+router.post('/register', userCreate);
 
 router.get('/login', loginRender);
 // router.post('/login', userLogin);

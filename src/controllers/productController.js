@@ -1,248 +1,262 @@
-const { check, validationResult } = require('express-validator');
-const { Product, Category, Manufacturers, Features } = require('../../models/index');
+// const { check, validationResult } = require('express-validator');
+// const { Product, Category, Manufacturers, Features } = require('../../models');
+const db = require('../../models/Index');
+const sequelize = db.sequelize;
 
-const productShopRender = async (req, res) => {
-    const [categories, Manufacturers, features] = await Promise.all([
-        Category.findAll(),
-        Manufacturers.findAll(),
-        Features.findAll()
-    ])
-
-    return res.send(Manufacturers)
-
-    res.render('products/productShop', {
-        categories, 
-        Manufacturers, 
-        features,
-        errors: [],
-        datos: {}
-    })
-};
-
-const productDetailRender = (req, res) => {
-    // let producto = ObjProductos.find(producto => producto.id == req.params.id);
-    // res.render('products/productDetail', { producto });
-    res.render('products/productDetail');
-};
-
-const productRegisterRender = async (req, res) => {
-    // Consultar a la base de datos por las categorias
-    const [categories, Manufacturers, features] = await Promise.all([
-        Category.findAll(),
-        Manufacturers.findAll(),
-        Features.findAll()
-    ])
-
-    res.render('products/productRegister', {
-        categories, 
-        Manufacturers, 
-        features,
-        errors: [],
-        datos: {}
-    })
+const productsController = {
+    'shopRender' : (req, res) => {
+        // res.send('hola mundo');
+        db.Product.findAll()
+            .then(function(productos) {
+                res.send("hola mundo");
+            })
+    }
 }
 
-const productCreate = async (req, res) => {
+module.exports = productsController;
 
-    // Validaciones
-    await check('name').notEmpty().withMessage('El nombre del producto no puede estar vacio').run(req)
-    await check('manufacturer').notEmpty().withMessage('Debes seleccionar el nombre de un fabricante').run(req)
-    await check('model').notEmpty().withMessage('Debes indicar el modelo del producto').run(req)
-    await check('variations').notEmpty().withMessage('Debes seleccionar las caracteristicas').run(req)
-    await check('category').notEmpty().withMessage('Debes seleccionar la categoria').run(req)
-    await check('description').notEmpty().withMessage('La descripcion es necesaria').run(req)
-    await check('price').notEmpty().withMessage('Debes indicar el precio del producto').run(req)
-    await check('discount').notEmpty().withMessage('Debes indicar el descuento del producto').run(req)
-    await check('stock').notEmpty().withMessage('Debes indicar el stock del producto').run(req)
+// const productShopRender = async (req, res) => {
+//     const [categories, Manufacturers, features] = await Promise.all([
+//         Category.findAll(),
+//         Manufacturers.findAll(),
+//         Features.findAll()
+//     ])
 
-    let resultado = validationResult(req);
+//     return res.send(Manufacturers)
 
-    if(!resultado.isEmpty()){
+//     res.render('products/productShop', {
+//         categories, 
+//         Manufacturers, 
+//         features,
+//         errors: [],
+//         datos: {}
+//     })
+// };
 
-        const [categories, Manufacturers, features] = await Promise.all([
-            Category.findAll(),
-            Manufacturers.findAll(),
-            Features.findAll()
-        ])
+// const productDetailRender = (req, res) => {
+//     // let producto = ObjProductos.find(producto => producto.id == req.params.id);
+//     // res.render('products/productDetail', { producto });
+//     res.render('products/productDetail');
+// };
 
-        return res.render('products/productRegister', {
-            categories, 
-            Manufacturers, 
-            features,
-            errors: resultado.array(),
-            datos: req.body
-        });
-    };
+// const productRegisterRender = async (req, res) => {
+//     // Consultar a la base de datos por las categorias
+//     const [categories, Manufacturers, features] = await Promise.all([
+//         Category.findAll(),
+//         Manufacturers.findAll(),
+//         Features.findAll()
+//     ])
 
-    const { name, manufacturer: manofacturer_id, model, variations: features_id, category: category_id, description, price, discount, stock, images} = req.body
+//     res.render('products/productRegister', {
+//         categories, 
+//         Manufacturers, 
+//         features,
+//         errors: [],
+//         datos: {}
+//     })
+// }
 
-    try {
-        const productSave = await Product.create({
-            name,
-            manofacturer_id,
-            model,
-            features_id, 
-            category_id, 
-            description, 
-            price, 
-            discount, 
-            stock, 
-            images: ""
-        })
-    } catch (error) {
-        console.log(error);
-    }
+// const productCreate = async (req, res) => {
 
-    res.redirect('/');
-}
+//     // Validaciones
+//     await check('name').notEmpty().withMessage('El nombre del producto no puede estar vacio').run(req)
+//     await check('manufacturer').notEmpty().withMessage('Debes seleccionar el nombre de un fabricante').run(req)
+//     await check('model').notEmpty().withMessage('Debes indicar el modelo del producto').run(req)
+//     await check('variations').notEmpty().withMessage('Debes seleccionar las caracteristicas').run(req)
+//     await check('category').notEmpty().withMessage('Debes seleccionar la categoria').run(req)
+//     await check('description').notEmpty().withMessage('La descripcion es necesaria').run(req)
+//     await check('price').notEmpty().withMessage('Debes indicar el precio del producto').run(req)
+//     await check('discount').notEmpty().withMessage('Debes indicar el descuento del producto').run(req)
+//     await check('stock').notEmpty().withMessage('Debes indicar el stock del producto').run(req)
 
-const productEditRender = async (req, res) => {
+//     let resultado = validationResult(req);
 
-    let resultado = validationResult(req);
+//     if(!resultado.isEmpty()){
 
-    if(!resultado.isEmpty()){
+//         const [categories, Manufacturers, features] = await Promise.all([
+//             Category.findAll(),
+//             Manufacturers.findAll(),
+//             Features.findAll()
+//         ])
 
-        const [categories, Manufacturers, features] = await Promise.all([
-            Category.findAll(),
-            Manufacturers.findAll(),
-            Features.findAll()
-        ])
+//         return res.render('products/productRegister', {
+//             categories, 
+//             Manufacturers, 
+//             features,
+//             errors: resultado.array(),
+//             datos: req.body
+//         });
+//     };
 
-        return res.render('products/productEdit', {
-            categories, 
-            Manufacturers, 
-            features,
-            errors: resultado.array(),
-            datos: req.body
-        });
-    };
+//     const { name, manufacturer: manofacturer_id, model, variations: features_id, category: category_id, description, price, discount, stock, images} = req.body
 
-    const { id } = req.params;
+//     try {
+//         const productSave = await Product.create({
+//             name,
+//             manofacturer_id,
+//             model,
+//             features_id, 
+//             category_id, 
+//             description, 
+//             price, 
+//             discount, 
+//             stock, 
+//             images: ""
+//         })
+//     } catch (error) {
+//         console.log(error);
+//     }
 
-    // Validacion de que el producto si existe
+//     res.redirect('/');
+// }
 
-    const product = await Product.findByPk(id);
-    console.log(product);
-    if(!product){
-        return res.redirect('products/productShop');
-    }
+// const productEditRender = async (req, res) => {
 
-    // Hacer la consulta del producto en la base de datos
+//     let resultado = validationResult(req);
 
-    const [categories, Manufacturers, features] = await Promise.all([
-        Category.findAll(),
-        Manufacturers.findAll(),
-        Features.findAll()
-    ])
+//     if(!resultado.isEmpty()){
 
-    return res.render('products/productEdit', {
-        categories, 
-        Manufacturers, 
-        features,
-        errors: resultado.array(),
-        datos: product
-    });
-};
+//         const [categories, Manufacturers, features] = await Promise.all([
+//             Category.findAll(),
+//             Manufacturers.findAll(),
+//             Features.findAll()
+//         ])
 
-const productEdit = async (req, res) => {
+//         return res.render('products/productEdit', {
+//             categories, 
+//             Manufacturers, 
+//             features,
+//             errors: resultado.array(),
+//             datos: req.body
+//         });
+//     };
 
-    let resultado = validationResult(req);
+//     const { id } = req.params;
 
-    if(!resultado.isEmpty()){
+//     // Validacion de que el producto si existe
 
-        const [categories, Manufacturers, features] = await Promise.all([
-            Category.findAll(),
-            Manufacturers.findAll(),
-            Features.findAll()
-        ])
+//     const product = await Product.findByPk(id);
+//     console.log(product);
+//     if(!product){
+//         return res.redirect('products/productShop');
+//     }
 
-        return res.render('products/productEdit', {
-            categories, 
-            Manufacturers, 
-            features,
-            errors: resultado.array(),
-            datos: req.body
-        });
-    };
+//     // Hacer la consulta del producto en la base de datos
 
-    const { id } = req.params;
+//     const [categories, Manufacturers, features] = await Promise.all([
+//         Category.findAll(),
+//         Manufacturers.findAll(),
+//         Features.findAll()
+//     ])
 
-    // Validacion de que el producto si existe
+//     return res.render('products/productEdit', {
+//         categories, 
+//         Manufacturers, 
+//         features,
+//         errors: resultado.array(),
+//         datos: product
+//     });
+// };
 
-    const product = await Product.findByPk(id);
+// const productEdit = async (req, res) => {
 
-    if(!product){
-        return res.redirect('/productShop');
-    }
+//     let resultado = validationResult(req);
 
-    try {
-        const { name, manufacturer: manofacturer_id, model, variations: features_id, category: category_id, description, price, discount, stock, images} = req.body;
+//     if(!resultado.isEmpty()){
 
-        product.set({
-            name,
-            manofacturer_id,
-            model,
-            features_id, 
-            category_id, 
-            description, 
-            price, 
-            discount, 
-            stock, 
-            images: ""
-        })
+//         const [categories, Manufacturers, features] = await Promise.all([
+//             Category.findAll(),
+//             Manufacturers.findAll(),
+//             Features.findAll()
+//         ])
 
-        await product.save();
+//         return res.render('products/productEdit', {
+//             categories, 
+//             Manufacturers, 
+//             features,
+//             errors: resultado.array(),
+//             datos: req.body
+//         });
+//     };
 
-        res.redirect('/')
+//     const { id } = req.params;
 
-    } catch (error) {
-        console.log(error);
-    }
+//     // Validacion de que el producto si existe
 
-};
+//     const product = await Product.findByPk(id);
 
-const productDeleteRender = async (req, res) => {
+//     if(!product){
+//         return res.redirect('/productShop');
+//     }
 
-    const { id } = req.params;
+//     try {
+//         const { name, manufacturer: manofacturer_id, model, variations: features_id, category: category_id, description, price, discount, stock, images} = req.body;
 
-    // Validacion de que el producto si existe
+//         product.set({
+//             name,
+//             manofacturer_id,
+//             model,
+//             features_id, 
+//             category_id, 
+//             description, 
+//             price, 
+//             discount, 
+//             stock, 
+//             images: ""
+//         })
 
-    const product = await Product.findByPk(id);
-    if(!product){
-        return res.redirect('products/productShop');
-    }
+//         await product.save();
 
-    // Hacer la consulta del producto en la base de datos
+//         res.redirect('/')
 
-    return res.render('products/productDelete', {
-        datos: product
-    });
-};
+//     } catch (error) {
+//         console.log(error);
+//     }
 
-const deleteProduct = async (req, res) => {
+// };
 
-    const { id } = req.params;
+// const productDeleteRender = async (req, res) => {
 
-    // Validacion de que el producto si existe
+//     const { id } = req.params;
 
-    const product = await Product.findByPk(id);
+//     // Validacion de que el producto si existe
 
-    if(!product){
-        return res.redirect('/productShop');
-    }
+//     const product = await Product.findByPk(id);
+//     if(!product){
+//         return res.redirect('products/productShop');
+//     }
 
-    // Eliminar el producto
-    await product.destroy();
-    res.redirect('/productShop');
-};
+//     // Hacer la consulta del producto en la base de datos
 
-module.exports = {
-    productShopRender,
-    productDetailRender,
-    productCreate,
-    productRegisterRender,
-    productEditRender,
-    productEdit,
-    productDeleteRender,
-    deleteProduct
-}
+//     return res.render('products/productDelete', {
+//         datos: product
+//     });
+// };
+
+// const deleteProduct = async (req, res) => {
+
+//     const { id } = req.params;
+
+//     // Validacion de que el producto si existe
+
+//     const product = await Product.findByPk(id);
+
+//     if(!product){
+//         return res.redirect('/productShop');
+//     }
+
+//     // Eliminar el producto
+//     await product.destroy();
+//     res.redirect('/productShop');
+// };
+
+// module.exports = {
+//     productShopRender,
+    // productDetailRender,
+    // productCreate,
+    // productRegisterRender,
+    // productEditRender,
+    // productEdit,
+    // productDeleteRender,
+    // deleteProduct
+// }
