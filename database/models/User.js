@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-    let moduleName = 'users';
+    let moduleName = 'User';
     let atributes = {
         id: { 
             type: DataTypes.INTEGER,
@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             autoIncrement: true
         },
-        firstName: { 
+        first_name: { 
             type: DataTypes.STRING,
             allowNull: false,
         },
-        lastName: { 
+        last_name: { 
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false
         },
-        profileImage: {
+        profile_image: {
             type: DataTypes.STRING,
             allowNull: false,
             defaultValue: 'defaultUserImage.png'
@@ -57,12 +57,12 @@ module.exports = (sequelize, DataTypes) => {
     }
     let config = {
         tableName: 'users',
-        timestamps: true,
-        firstName: 'first_name',
-        lastName: 'last_name',
-        profileImage: 'profile_image',
-        createdAt: 'created_date',
-        updatedAt: 'updated_at'
+        timestamps: false,
+        // firstName: 'first_name',
+        // lastName: 'last_name',
+        // profileImage: 'profile_image',
+        // createdAt: 'created_date',
+        // updatedAt: 'updated_at'
     }
 
     const User = sequelize.define(moduleName, atributes, config);

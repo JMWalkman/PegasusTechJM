@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     let config = {
         tableName: 'products',
-        timestamps: true,
+        timestamps: false,
         // lineId: 'line_id',
         // categoryId: 'category_id',
         // createdAt: 'created_date',

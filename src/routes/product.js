@@ -2,7 +2,7 @@ const express = require('express');
 const {body} = require('express-validator')//validaciones del form
 const router = express.Router();
 const path = require('path');
-const multer = require('multer')
+const multer = require('multer');
 const productController = require('../controllers/productController');
 
 const storage =  multer.diskStorage({

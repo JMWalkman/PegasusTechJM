@@ -4,7 +4,7 @@
 <head> 
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
-  <script>/*preguntar si el registro del usuario se hizo*/
+  <script>/*preguntar si el registro del user se hizo*/
       function confirmar(){
           Swal.fire({
               title: 'Formulario enviado con exito!'
@@ -25,12 +25,23 @@
       <h1>Crea tu cuenta</h1>
 
       <div class="form-field">
-        <label for="fullName"><p>Nombre completo</p></label>
-        <input type="text" name="fullName" id="fullName" class="text-input" 
-          form="registerForm" value="<%= usuario ? usuario.fullName : '' %>">
-        <% if(locals.errors && errors.fullName) {%> 
+        <label for="firstName"><p>Nombre</p></label>
+        <input type="text" name="firstName" id="firstName" class="text-input" 
+          form="registerForm" value="<%= user ? user.firstName : '' %>">
+        <% if(locals.errors && errors.firstName) {%> 
           <div class="error-message">
-            <p> <%= errors.fullName.msg %> </p>
+            <p> <%= errors.firstName.msg %> </p>
+          </div>
+        <% }; %>
+      </div>
+
+      <div class="form-field">
+        <label for="lastName"><p>Apellido</p></label>
+        <input type="text" name="lastName" id="lastName" class="text-input" 
+          form="registerForm" value="<%= user ? user.lastName : '' %>">
+        <% if(locals.errors && errors.lastName) {%> 
+          <div class="error-message">
+            <p> <%= errors.lastName.msg %> </p>
           </div>
         <% }; %>
       </div>
@@ -38,7 +49,7 @@
       <div class="form-field">
         <label for="email"><p>Correo electrónico</p></label>
         <input type="email" name="email" id="email" class="text-input"
-          form="registerForm" value="<%= usuario ? usuario.email : '' %>">
+          form="registerForm" value="<%= user ? user.email : '' %>">
         <% if(locals.errors && errors.email) {%> 
           <div class="error-message">
             <p> <%= errors.email.msg %> </p>
@@ -71,7 +82,7 @@
       <div class="form-field">
         <label for="phone"><p>Número Celular</p></label>
         <input type="text" name="phone" id="phone" class="text-input" 
-          form="registerForm" value="<%= usuario ? usuario.phone : '' %>">
+          form="registerForm" value="<%= user ? user.phone : '' %>">
         <% if(locals.errors && errors.phone) {%> 
           <div class="error-message paragraph">
             <p> <%= errors.phone.msg %> </p>

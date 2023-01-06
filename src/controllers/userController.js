@@ -1,8 +1,11 @@
+const db = require('../../database/models/index');
 const { User } = require('../../database/models');
+const { generateId, generateJWT } = require('../../helpers/tokens.js');
 
 module.exports = {
     registerRender: (req, res) => {
-        res.render('users/register', {errors: [], usuario: ''});
+        // res.send(Object.keys(db));
+        res.render('users/register', {errors: [], user: ''});
     },
     loginRender: (req, res) => {
         res.render('users/login', {errors: []});
@@ -12,6 +15,74 @@ module.exports = {
     },
     userEditRender: async (req, res) => {
         getUserInfo(req, res, 'users/userEdit')
+    },
+    userCreate: async (req, res) => {
+        const { firstName, lastName, email, password, phone } = req.body;
+    
+        // Verificar que el usuario no este en la base de datos
+        const userExists = await User.findOne( { where : { email } })
+        
+        // Si ya existe el usuario, pedirle que entre a su cuenta
+        if(userExists) {
+            return res.render('users/login', {
+                errors: {email: {msg: 'El correo ya está Registrado'}}, 
+                user: {
+                    email: email,
+                }
+            });
+        }
+    
+        // Validaciones
+        await check('firstName')
+            .notEmpty()
+            .withMessage('Debes escribir al menos un nombre').run(req)
+        await check('lastName')
+            .notEmpty()
+            .withMessage('Debes escribir al menos un apellido').run(req)
+        await check('email')
+            .isEmail()
+            .withMessage('Eso no parece un email').run(req)
+        await check('password')
+            .isLength({ min: 6 })
+            .withMessage('La contraseña debe tener por lo menos 6 caracteres').run(req)
+        await check('repassword')
+            .equals(req.body.password)
+            .withMessage('Las contraseñas deben ser iguales').run(req)
+        await check('phone')
+            .isLength({ min: 10 })
+            .withMessage('El numero de telefono debe tener al menos 10 digitos').run(req)
+        await check('termsAndConditions')
+            .equals("on")
+            .withMessage('Debes aceptar los términos y condiciones').run(req)
+        
+        // Mostrar errores y hacer la validacion
+        let validationResult = validationResult(req)
+    
+        // res.send(validationResult.mapped())
+        res.send(req.body)
+    
+        // Si hay información en la validación entonces mostrar errores
+        if(!validationResult.isEmpty()) {
+            return res.render('users/register', {
+                errors: validationResult.mapped(),
+                user: {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                    phone: req.body.phone
+                }
+            })
+        }
+    
+        // Almacenar un usuario
+        await User.create({
+            fullName,
+            email,
+            password,
+            phone,
+            token: generateId()
+        })
+        res.redirect('../users/login');
     }
 }
 
@@ -39,66 +110,12 @@ const getUserInfo = async (req, res, pageToRender) => {
     }
 }
 
-const userCreate = async (req, res) => {
-    const { fullName, email, password, phone } = req.body;
-
-    // Verificar que el usuario no este en la base de datos
-    const existeUsuario = await db.User.findOne( { where : { email } })
-    
-    if(existeUsuario) {
-        return res.render('users/login', {
-            errors: {email: {msg: 'El correo ya está Registrado'}}, 
-            usuario: {
-                nombre: req.body.fullName,
-                email: req.body.email
-            }
-        });
-    }
-
-    // Validaciones
-    await check('fullName').notEmpty().withMessage('El nombre es obligatorio').run(req)
-    await check('email').isEmail().withMessage('Eso no parece un email').run(req)
-    await check('password').isLength({ min: 6 }).withMessage('La contraseña debe tener por lo menos 6 caracteres').run(req)
-    await check('repassword').equals(req.body.password).withMessage('Las contraseñas no son iguales').run(req)
-    await check('phone').isLength({ min: 10 }).withMessage('El numero de telefono debe ser de 10 digitos').run(req)
-    await check('termsAndConditions').equals("on").withMessage('Debes aceptar los términos y condiciones').run(req)
-    
-    // Mostrar errores y hacer la validacion
-    let resultado = validationResult(req)
-
-    res.send(resultado.mapped())
-    res.send(req.body)
-
-    // Verificar que el resultado no este vacio
-    if(!resultado.isEmpty()) {
-        return res.render('users/register', {
-            errors: resultado.mapped(),
-            usuario: {
-                fullName: req.body.fullName,
-                email: req.body.email,
-                phone: req.body.phone
-            }
-        })
-    }
-
-    // Almacenar un usuario
-    await User.create({
-        fullName,
-        email,
-        password,
-        phone,
-        image: "defaultUserImage.png",
-        token: generarId()
-    })
-    res.redirect('../users/login');
-}
-
 // const {check, validationResult} = require('express-validator');
 // const bcrypt = require('bcrypt');
 // // const db = require('../../config/db.js');
 // const db = require('../../models/index.js');
 // const User = require('../../models/User.js');
-// const { generarId, generarJWT } = require('../../helpers/tokens.js');
+
 // const { Sequelize } = require('sequelize');
 
 // const registerRender = (req, res) => res.render('users/register', {
