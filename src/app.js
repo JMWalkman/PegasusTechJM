@@ -9,7 +9,7 @@ const mainRouter = require('./routes/main');
 const productRouter = require('./routes/product');
 // const cartRouter = require('./routes/cart');
 const userRouter = require('./routes/user');
-// const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware')
+const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware')
 
 //cookie-parser
 app.use(cookies())
@@ -20,7 +20,7 @@ app.use(session({
     saveUninitialized: false
 }))
 
-// app.use(userLoggedMiddleware)
+app.use(userLoggedMiddleware)
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); // siempre se debe hacer cuando views no esté en raíz

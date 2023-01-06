@@ -1,20 +1,42 @@
-    // const { User } = require('../../models');
-const db = require('../../database/models');
+const { User } = require('../../database/models');
 
-const registerRender = (req, res) => res.render('users/register', {
-    errors: [],
-    usuario: ''
-});
-
-const loginRender = (req, res) => {
-    res.render('users/login', {errors: []});
+module.exports = {
+    registerRender: (req, res) => {
+        res.render('users/register', {errors: [], usuario: ''});
+    },
+    loginRender: (req, res) => {
+        res.render('users/login', {errors: []});
+    },
+    profileRender: async ( req, res ) => {
+        getUserInfo(req, res, 'users/userProfile')
+    },
+    userEditRender: async (req, res) => {
+        getUserInfo(req, res, 'users/userEdit')
+    }
 }
 
-const usersRender = (req, res) => {
-    db.User.findAll()
-        .then(function(users) {
-            res.send(users);
-        })
+const getUserInfo = async (req, res, pageToRender) => {
+    const { _token } = req.cookies
+    if(!_token) {
+        return res.redirect('../users/login')
+    }
+    
+    try {
+        const decoded = Jwt.verify(_token, process.env.JWT_SECRET)
+        const userId = await User.scope('eliminarPassword').findByPk(decoded.id)
+    
+        // Validar que el usuario y buscarlo en la base de datos
+        const userInfo = await User.findByPk(userId.id);
+
+        // res.send(userInfo.address)
+        if(!userInfo.hasOwnProperty('address')) userInfo.address = "Sin definir";
+        if(!userInfo.hasOwnProperty('gender')) userInfo.gender = "Sin definir";
+        
+        // res.send(userInfo);  
+        return res.render(pageToRender, {userInfo})
+    } catch (error) {
+        return res.clearCookie('_token').redirect('../users/login')
+    }
 }
 
 const userCreate = async (req, res) => {
@@ -69,12 +91,6 @@ const userCreate = async (req, res) => {
         token: generarId()
     })
     res.redirect('../users/login');
-}
-
-module.exports = {
-    registerRender,
-    loginRender,
-    userCreate
 }
 
 // const {check, validationResult} = require('express-validator');
@@ -162,30 +178,6 @@ module.exports = {
 
 // const logout = (req, res) => {
 //     return res.clearCookie('_token').status(200).redirect('/');
-// }
-
-// const getUserInfo = async (req, res, pageToRender) => {
-//     const { _token } = req.cookies
-//     if(!_token) {
-//         return res.redirect('../users/login')
-//     }
-    
-//     try {
-//         const decoded = Jwt.verify(_token, process.env.JWT_SECRET)
-//         const usuarioId = await User.scope('eliminarPassword').findByPk(decoded.id)
-    
-//         // Validar que el usuario y buscarlo en la base de datos
-//         const usuario = await User.findByPk(usuarioId.id);
-
-//         // res.send(usuario.address)
-//         if(!usuario.hasOwnProperty('address')) usuario.address = "Sin definir";
-//         if(!usuario.hasOwnProperty('gender')) usuario.gender = "Sin definir";
-        
-//         // res.send(usuario);  
-//         return res.render(pageToRender, {usuario})
-//     } catch (error) {
-//         return res.clearCookie('_token').redirect('../users/login')
-//     }
 // }
 
 // module.exports = {

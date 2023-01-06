@@ -1,5 +1,5 @@
 // const User = require('../../models/User')//se traen los usuarios para buscar el email
-const User = require('../../models/User.js');
+const User = require('../../database/models/User.js');
 const Jwt = require('jsonwebtoken');
 //pregunta si hay alguien en session para mostrar una parte de la barra de navegacion o no
 

@@ -7,9 +7,21 @@
 
 <body>
   <%- include('../partials/header.ejs') %>
+  <section class="shop-filters">
+
+  </section>
   <main>
     <% for (let i=0; i<products.length; i++) {%>
-      <h2><%= products[i].variation %> </h2>
+      <% productName = products[i].manufacturer_id + products[i].line_id + products[i].variation %> 
+      <div class="product-preview">
+        <div class="preview-img">
+          <img src="/img/uploads/products/<%= products[i].images %>"/>
+        </div>
+        <div class="product-name">
+          <a href="../products/productDetail/<%= products[i].id %>"><h3><%= productName %></h3></a>
+        </div>
+        <div class="price"><h2>$ <%= products[i].price %></h2></div>
+      </div>
     <% } %> 
   </main>
   <%- include('../partials/footer') %> 

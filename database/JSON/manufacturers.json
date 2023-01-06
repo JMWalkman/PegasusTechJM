@@ -1,0 +1,11 @@
+[
+    {"id": "1", "manufacturer": "AMD"}, 
+    {"id": "2", "manufacturer": "Intel"}, 
+    {"id": "3", "manufacturer": "Nvidia"}, 
+    {"id": "4", "manufacturer": "Asus"}, 
+    {"id": "5", "manufacturer": "HP"},
+    {"id": "6", "manufacturer": "Lenovo"},
+    {"id": "7", "manufacturer": "Apple"},
+    {"id": "8", "manufacturer": "Dell"},
+    {"id": "9", "manufacturer": "Keychron"}
+]

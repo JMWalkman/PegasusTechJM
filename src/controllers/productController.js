@@ -1,9 +1,13 @@
 const { check, validationResult } = require('express-validator');
-const { Product } = require('../../database/models');
+const { 
+    User,
+    Product,
+    Manufacturer,
+    ProductLine,
+    Category } = require('../../database/models');
 
 module.exports = {
     shopRender: async (req,res) => {
-        // Product.sync({alter: true})
         await Product.findAll()
             .then(function(products) {
                 // res.send(products)
@@ -13,8 +17,24 @@ module.exports = {
     productDetailRender: async (req, res) => {
         await Product.findByPK(req.param.id)
             .then(function(product) {
-                res.render('products/productDetail', product);
+                res.render('products/productDetail', {product:product});
             })
+    },
+    productRegisterRender: async (req, res) => {
+        // implementar funcion para verificar admin
+        res.render('products/productRegister')
+    },
+    productEditRender: async (req, res) => {
+        await Product.findByPK(req.param.id)
+            .then(function(product) {
+                res.render('products/productEdit', {product:product});
+            })
+    },
+    productCreate: async (req, res) => {
+        
+    },
+    productEdit: async (req, res) => {
+        
     }
 }
 
