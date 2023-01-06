@@ -1,4 +1,4 @@
-// const { User } = require('../../models');
+    // const { User } = require('../../models');
 const db = require('../../database/models');
 
 const registerRender = (req, res) => res.render('users/register', {

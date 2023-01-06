@@ -1,25 +1,22 @@
-// const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 const { Product } = require('../../database/models');
-// const sequelize = db.sequelize;
 
 module.exports = {
     shopRender: async (req,res) => {
-        Product.sync({alter: true})
+        // Product.sync({alter: true})
         await Product.findAll()
             .then(function(products) {
-                res.send(products)
-                // res.render('products/', products)
+                // res.send(products)
+                res.render('products/productShop', {products:products})
+            })
+    },
+    productDetailRender: async (req, res) => {
+        await Product.findByPK(req.param.id)
+            .then(function(product) {
+                res.render('products/productDetail', product);
             })
     }
 }
-const shopRender = async (req,res) => {
-    db.Product.findAll()
-        .then(function(products) {
-            res.send(products)
-        })
-}
-
-module.exports = shopRender;
 
 // const productShopRender = async (req, res) => {
 //     const [categories, Manufacturers, features] = await Promise.all([

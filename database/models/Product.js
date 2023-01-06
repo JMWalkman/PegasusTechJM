@@ -1,20 +1,32 @@
 module.exports = (sequelize, DataTypes) => {
     let alias = 'Product';
     let atributes = {
-        id: { 
+        id: {
             type: DataTypes.INTEGER,
-            primanyKey: true,
-            autoIncrement: true
+            primaryKey: true,
+            allowNull: false
         },
         manufacturer_id: { type: DataTypes.INTEGER },
         line_id: { type: DataTypes.INTEGER },
         variation: { type: DataTypes.STRING(50) },
         category_id: { type: DataTypes.INTEGER },
         description: { type: DataTypes.STRING(500) },
-        price: { type: DataTypes.INTEGER },
-        discount: { type: DataTypes.INTEGER },
-        stock: { type: DataTypes.INTEGER },
-        rating: { type: DataTypes.INTEGER },
+        price: { 
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        discount: { 
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        stock: { 
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        rating: { 
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         images: { type: DataTypes.STRING },
         createdAt: { type: DataTypes.DATE },
         updatedAt: { type: DataTypes.DATE }
