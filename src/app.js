@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const session = require('express-session');
 const cookies = require('cookie-parser');
+require('dotenv').config(); // key de JWT
+
 const methodOverride =  require('method-override'); // Para poder usar los métodos PUT y DELETE
 
 const mainRouter = require('./routes/main');

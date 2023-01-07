@@ -1,16 +1,17 @@
 const Jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const generateJWT = datos => {
-    Jwt.sign({ 
+    return Jwt.sign({ 
         id: datos.id,
         fullName: datos.fullName,
         phone: datos.phone,
         email: datos.email
     },
-    process.env.JWT_SECRET, {expiresIn: '1d'});
+    process.env.JWT_KEY, {expiresIn: '1d'});
 }
 const generateId = () => {
-    Math.random().toString(32).substring(2) + Date.now().toString(32);
+    return Math.random().toString(32).substring(2) + Date.now().toString(32);
 }
 
 module.exports = {

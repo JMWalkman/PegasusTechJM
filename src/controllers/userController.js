@@ -1,4 +1,7 @@
+const {check, validationResult} = require('express-validator');
+const bcrypt = require('bcrypt');
 const db = require('../../database/models/index');
+require('dotenv').config();
 const { User } = require('../../database/models');
 const { generateId, generateJWT } = require('../../helpers/tokens.js');
 
@@ -56,15 +59,15 @@ module.exports = {
             .withMessage('Debes aceptar los términos y condiciones').run(req)
         
         // Mostrar errores y hacer la validacion
-        let validationResult = validationResult(req)
+        let validation = validationResult(req)
     
-        // res.send(validationResult.mapped())
-        res.send(req.body)
+        // res.send(validation.mapped())
+        // res.send(req.body)
     
         // Si hay información en la validación entonces mostrar errores
-        if(!validationResult.isEmpty()) {
+        if(!validation.isEmpty()) {
             return res.render('users/register', {
-                errors: validationResult.mapped(),
+                errors: validation.mapped(),
                 user: {
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,
@@ -76,13 +79,69 @@ module.exports = {
     
         // Almacenar un usuario
         await User.create({
-            fullName,
-            email,
-            password,
-            phone,
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            password: password,
+            phone: phone,
             token: generateId()
         })
         res.redirect('../users/login');
+    },
+    userLogin: async (req, res) => {
+        // Validacion
+        await check('email').isEmail().withMessage('Debes ingresar una dirección de correo válida').run(req)
+        await check('password').notEmpty().withMessage('La contraseña es obligatoria').run(req)
+    
+        let validation = validationResult(req)
+    
+        // res.send(req.body) // Debugging
+        // res.send(validation.mapped()) // Debugging
+    
+        // Enviar mensaje de error si hay error
+        if(!validation.isEmpty()){
+            return res.render('users/login', { errors: validation.mapped() });
+        }
+        
+        // Comprobar si el usuario existe
+        const { email, password } = req.body;
+        const userInfo = await User.findOne({where : {email}});
+    
+        if(!userInfo){
+            return res.render('users/register', {
+                errors: {
+                    email: {msg: 'Este correo no está registrado'}
+                },
+                user: {
+                    email: email,
+                }
+            })
+        }
+        
+        // Revisar el password
+        if(password != userInfo.password) {
+        // if(!userInfo.verificarPassword(password)){
+            return res.render('users/login', {
+                errors: {password: {msg: 'La contraseña es incorrecta'}}
+            })
+        }
+        
+        // Autenticar al usuario
+        // res.send({
+        const token = generateJWT({
+            id: userInfo.id,
+            firstName: userInfo.first_name,
+            fullName: userInfo.fullName,
+            phone: userInfo.phone,
+            email: userInfo.email
+        });
+        
+        // Almacenar en un cookie
+        return res.cookie('_token', token, {
+            httpOnly: true
+            // secure: true,
+            // sameSite: true
+        }).redirect('/')
     }
 }
 
@@ -110,8 +169,7 @@ const getUserInfo = async (req, res, pageToRender) => {
     }
 }
 
-// const {check, validationResult} = require('express-validator');
-// const bcrypt = require('bcrypt');
+
 // // const db = require('../../config/db.js');
 // const db = require('../../models/index.js');
 // const User = require('../../models/User.js');
@@ -138,53 +196,7 @@ const getUserInfo = async (req, res, pageToRender) => {
 
 
 
-// const userLogin = async (req, res) => {
-//     // Validacion
-//     await check('email').isEmail().withMessage('Debes ingresar una dirección de correo válida').run(req)
-//     await check('password').notEmpty().withMessage('La contraseña es obligatoria').run(req)
 
-//     let resultado = validationResult(req)
-
-//     // res.send(req.body) // Debugging
-//     // res.send(resultado.mapped()) // Debugging
-
-//     // Enviar mensaje de error si existe
-//     if(!resultado.isEmpty()){
-//         return res.render('users/login', {
-//             // errores: resultado.array(),
-//             errors: resultado.mapped(),
-//         })
-//     }
-    
-//     // Comprobar si el usuario existe
-//     const {email, password} = req.body;
-
-//     const usuario = await User.findOne({where : {email}});
-
-//     if(!usuario){
-//         return res.render('users/login', {
-//             errors: {email: {msg: 'El usuario no existe'}}
-//         })
-//     }
-
-//     // Revisar el password
-//     if(!usuario.verificarPassword(password)){
-//         return res.render('users/login', {
-//             errors: {password: {msg: 'La contraseña es incorrecta'}}
-//         })
-//     }
-
-//     // Autenticar al usuario
-//     const token = generarJWT({id: usuario.id, fullName: usuario.fullName, 
-//         phone: usuario.phone, email: usuario.email});
-    
-//     // Almacenar en un cookie
-//     return res.cookie('_token', token, {
-//         httpOnly: true
-//         // secure: true,
-//         // sameSite: true
-//     }).redirect('/')
-// }
 
 // const userEdit = async (req, res) => {
 //     await User.update({
