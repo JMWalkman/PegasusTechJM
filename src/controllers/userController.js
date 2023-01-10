@@ -22,7 +22,7 @@ const getUserInfo = async (req, res, pageToRender) => {
                 email: userEmail
             }
         })
-        userInfo.password = null;
+        delete userInfo.password
         userInfo.profile_image = uploadsPath + '/users/' + userInfo.profile_image;
         
         // return res.send(userInfo);

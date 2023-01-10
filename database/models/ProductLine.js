@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             autoIncrement: true
         },
-        manufacturerId: {
+        manufacturer_id: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -20,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     let config = {
         tableName: 'product_lines',
-        manufacturerId: 'manufacturer_id',
-        timestamps: false
+        timestamps: false,
     }
 
     const ProductLine = sequelize.define(modelName, atributes, config);

@@ -1,4 +1,5 @@
 const { check, validationResult } = require('express-validator');
+const { uploadsPath } = require('../../public/js/filePaths');
 const { 
     User,
     Product,
@@ -8,17 +9,43 @@ const {
 
 module.exports = {
     shopRender: async (req,res) => {
-        await Product.findAll()
-            .then(function(products) {
-                // res.send(products)
-                res.render('products/productShop', {products:products})
-            })
+        const categories = await Category.findAll();
+        // const manufacturers = await Manufacturer.findAll();
+        // const productLines = await ProductLine.findAll();
+        const products = await Product.findAll({ limit: 10 });
+
+        return res.render('products/productShop', {
+            categories: categories,
+            products: products
+        });
     },
     productDetailRender: async (req, res) => {
-        await Product.findByPK(req.param.id)
-            .then(function(product) {
-                res.render('products/productDetail', {product:product});
-            })
+        let productId = req.params.id;
+        
+        // const product = await Product.findByPk(productId) 
+        const product = await Product.findOne({
+            where: { id: productId }
+        })
+        // return res.send(product)
+        const productLine = await ProductLine.findOne({
+            where: { id: product.line_id}
+        })
+        // return   res.send(productLine)
+        const productManufacturer = await Manufacturer.findOne({
+            where: { id: productLine.manufacturer_id}
+        })
+        // return res.send(productManufacturer)
+        let productInfo = product.dataValues;
+
+        productInfo.name = `${productManufacturer.manufacturer} ${productLine.line} ${product.variation}`;
+        productInfo.images = `${uploadsPath}/products/${product.images}`;
+
+        delete productInfo.variation
+        delete productInfo.line_id
+
+        // return res.send(product)
+
+        return res.render('products/productDetail', {productInfo:productInfo});
     },
     productRegisterRender: async (req, res) => {
         // implementar funcion para verificar admin
@@ -37,24 +64,6 @@ module.exports = {
         
     }
 }
-
-// const productShopRender = async (req, res) => {
-//     const [categories, Manufacturers, features] = await Promise.all([
-//         Category.findAll(),
-//         Manufacturers.findAll(),
-//         Features.findAll()
-//     ])
-
-//     return res.send(Manufacturers)
-
-//     res.render('products/productShop', {
-//         categories, 
-//         Manufacturers, 
-//         features,
-//         errors: [],
-//         datos: {}
-//     })
-// };
 
 // const productDetailRender = (req, res) => {
 //     // let producto = ObjProductos.find(producto => producto.id == req.params.id);
