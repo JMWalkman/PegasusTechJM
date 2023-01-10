@@ -24,6 +24,6 @@ router.get('/edit', userController.userEditRender);
 router.post('/register', userController.userCreate);
 router.post('/login', userController.userLogin);
 // router.post('/editInfo', userEdit);
-// router.post('/logout', logout);
+router.post('/logout', userController.logout);
 
 module.exports = router;

@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `pegasus_tech_jm_dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE  IF NOT EXISTS `pegasus_tech_jm_dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `pegasus_tech_jm_dev`;
--- MariaDB dump 10.19  Distrib 10.4.25-MariaDB, for Win64 (AMD64)
+-- MariaDB dump 10.19  Distrib 10.4.27-MariaDB, for Win64 (AMD64)
 --
 -- Host: 127.0.0.1    Database: pegasus_tech_jm_dev
 -- ------------------------------------------------------
--- Server version	10.4.25-MariaDB
+-- Server version	10.4.27-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,7 +28,7 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,7 +52,7 @@ CREATE TABLE `manufacturers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `manufacturer` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ CREATE TABLE `product_lines` (
   `manufacturer_id` int(11) DEFAULT NULL,
   `line` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +109,7 @@ CREATE TABLE `products` (
   `rating` int(11) DEFAULT NULL,
   `images` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,10 +140,10 @@ CREATE TABLE `users` (
   `address` text DEFAULT NULL,
   `title` text DEFAULT NULL,
   `token` text DEFAULT NULL,
-  `aunthenticated` binary(1) DEFAULT NULL,
+  `authenticated` text DEFAULT 'false',
   `profile_image` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Sherwood','Agg','sagg0@mtv.com','avDGo2CgCGu',4601015442,'Male','04551 Del Sol Center','Operator','Por Definir','T','defaultUserImage.png'),(2,'North','Shimoni','nshimoni1@census.gov','8ZDhe3u',9045836007,'Other','629 Rigney Road','User','Por Definir','T','defaultUserImage.png'),(3,'Kaela','Wrankling','kwrankling2@ed.gov','Lnqe2E',5622389780,'Female','30 Lillian Pass','Operator','Por Definir','T','defaultUserImage.png'),(4,'Gregor','Quinn','gquinn3@canalblog.com','k9xB4Rdg',1179189438,'None','None','User','Por Definir','F','defaultUserImage.png'),(5,'Dione','Klement','dklement4@pcworld.com','mI3Z34cw3erZ',4642993309,'None','None','Admin','Por Definir','T','defaultUserImage.png'),(6,'Livvy','Saltern','lsaltern5@dot.gov','0HQORps',9716699545,'Male','7372 Farragut Avenue','Admin','Por Definir','T','defaultUserImage.png'),(7,'Jaclyn','Waite','jwaite6@ucsd.edu','wGXJc9',6719325911,'Other','83 Iowa Drive','User','Por Definir','F','defaultUserImage.png'),(8,'Abby','Dewdeny','adewdeny7@wsj.com','1Z0xnPnl',4081764560,'Other','657 East Plaza','User','Por Definir','T','defaultUserImage.png'),(9,'Tremaine','Spoure','tspoure8@disqus.com','dprHn86LG',2322779417,'None','None','Operator','Por Definir','T','defaultUserImage.png'),(10,'Reggis','Sherbourne','rsherbourne9@flickr.com','OoFWUE',1707600756,'Female','5793 Bunker Hill Junction','User','Por Definir','F','defaultUserImage.png');
+INSERT INTO `users` VALUES (0,'Jose','Munoz','josemanuel.tmn@gmail.com','123456',3012801368,'Sin Definir','Sin Definir','user','i4p6kfvjh71gmce2i44','false','defaultUserImage.png'),(1,'Sherwood','Agg','sagg0@mtv.com','avDGo2CgCGu',4601015442,'Male','04551 Del Sol Center','Operator','Por Definir','true','defaultUserImage.png'),(2,'North','Shimoni','nshimoni1@census.gov','8ZDhe3u',9045836007,'Other','629 Rigney Road','User','Por Definir','true','defaultUserImage.png'),(3,'Kaela','Wrankling','kwrankling2@ed.gov','Lnqe2E',5622389780,'Female','30 Lillian Pass','Operator','Por Definir','true','defaultUserImage.png'),(4,'Gregor','Quinn','gquinn3@canalblog.com','k9xB4Rdg',1179189438,'None','None','User','Por Definir','true','defaultUserImage.png'),(5,'Dione','Klement','dklement4@pcworld.com','mI3Z34cw3erZ',4642993309,'None','None','Admin','Por Definir','true','defaultUserImage.png'),(6,'Livvy','Saltern','lsaltern5@dot.gov','0HQORps',9716699545,'Male','7372 Farragut Avenue','Admin','Por Definir','true','defaultUserImage.png'),(7,'Jaclyn','Waite','jwaite6@ucsd.edu','wGXJc9',6719325911,'Other','83 Iowa Drive','User','Por Definir','true','defaultUserImage.png'),(8,'Abby','Dewdeny','adewdeny7@wsj.com','1Z0xnPnl',4081764560,'Other','657 East Plaza','User','Por Definir','true','defaultUserImage.png'),(9,'Tremaine','Spoure','tspoure8@disqus.com','dprHn86LG',2322779417,'None','None','Operator','Por Definir','true','defaultUserImage.png'),(10,'Reggis','Sherbourne','rsherbourne9@flickr.com','OoFWUE',1707600756,'Female','5793 Bunker Hill Junction','User','Por Definir','true','defaultUserImage.png');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -165,4 +165,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-06 14:52:29
+-- Dump completed on 2023-01-09 22:59:28

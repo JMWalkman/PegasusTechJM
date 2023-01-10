@@ -14,22 +14,33 @@
       <input type="file" name="profileImage" id="profileImage">
       <label for="profileImage">
         <div>
-          <img src="../../img/users/<%= usuario.image %>"/>
+          <img src="<%= userInfo.profile_image %>"/>
         </div>
       </label>
       
-      <h1><%= usuario.fullName %></h1>
-      <h3><%= usuario.email %></h3>
+      <h1><%= userInfo.first_name + " " + userInfo.last_name %></h1>
+      <h3><%= userInfo.email %></h3>
     </section>
 
     <section class="form-section user-info">
       <div class="form-field">
-        <label for="fullName"><p>Nombre completo</p></label>
-        <input type="text" name="fullName" id="fullName" class="text-input" 
-          form="editSaveForm" placeholder="<%= usuario ? usuario.fullName : '' %>">
-        <% if(locals.errors && errors.fullName) {%> 
+        <label for="firstName"><p>Nombre</p></label>
+        <input type="text" name="firstName" id="firstName" class="text-input" 
+          form="editSaveForm" placeholder="<%= userInfo ? userInfo.first_name : '' %>">
+        <% if(locals.errors && errors.first_name) {%> 
           <div class="error-message">
-            <p> <%= errors.fullName.msg %> </p>
+            <p> <%= errors.first_name.msg %> </p>
+          </div>
+        <% }; %>
+      </div>
+
+      <div class="form-field">
+        <label for="fullName"><p>Nombre</p></label>
+        <input type="text" name="lastName" id="lastName" class="text-input" 
+          form="editSaveForm" placeholder="<%= userInfo ? userInfo.last_name : '' %>">
+        <% if(locals.errors && errors.last_name) {%> 
+          <div class="error-message">
+            <p> <%= errors.last_name.msg %> </p>
           </div>
         <% }; %>
       </div>
@@ -37,7 +48,7 @@
       <div class="form-field">
         <label for="email"><p>Correo electrónico</p></label>
         <input type="email" name="email" id="email" class="text-input"
-          form="editSaveForm" placeholder="<%= usuario ? usuario.email : '' %>">
+          form="editSaveForm" placeholder="<%= userInfo ? userInfo.email : '' %>">
         <% if(locals.errors && errors.email) {%> 
           <div class="error-message">
             <p> <%= errors.email.msg %> </p>
@@ -48,7 +59,7 @@
       <div class="form-field">
         <label for="phone"><p>Teléfono</p></label>
         <input type="text" name="phone" id="phone" class="text-input" 
-          form="editSaveForm" placeholder="<%= usuario ? usuario.phone : '' %>">
+          form="editSaveForm" placeholder="<%= userInfo ? userInfo.phone : '' %>">
         <% if(locals.errors && errors.phone) {%> 
           <div class="error-message paragraph">
             <p> <%= errors.phone.msg %> </p>
@@ -59,7 +70,7 @@
       <div class="form-field">
         <label for="address"><p>Dirección</p></label>
         <input type="text" name="address" id="address" class="text-input" 
-          form="editSaveForm" placeholder="<%= usuario ? usuario.address : '' %>">
+          form="editSaveForm" placeholder="<%= userInfo ? userInfo.address : '' %>">
         <% if(locals.errors && errors.address) {%> 
           <div class="error-message paragraph">
             <p> <%= errors.address.msg %> </p>
@@ -93,35 +104,3 @@
   <%- include('../partials/footer') %>
 </body>
 </html>
-
-<!-- <body>
-  <%- include('../partials/header') %>
-  
-  <form action="" 
-    method="POST" enctype="multipart/form-data">
-    <label for="fullName">fullName</label>
-    <input type="text" name="fullName" id="fullName" value="<%= usuario.fullName %>">
-
-    <label for="email">email</label>
-    <input type="email" name="email" id="email" value="<%= usuario.email %>">
-
-    <label for="phone">phone</label>
-    <input type="text" name="phone" id="phone" value="<%= usuario.phone %>">
-
-    <label for="address">address</label>
-    <input type="password" name="address" id="address" value="<%= usuario.password %>">
-
-    <select name="gender" value=" ">
-      <option value="Hombre">Hombre</option>
-      <option value="Mujer">Mujer</option>
-      <option value="Otro">Otro</option>
-    </select>
-    <label for="profileImage">profileImage</label>
-    <input type="file" name="profileImage" id="profileImage">
-
-    
-  </form>
-
-  <%- include('../partials/footer') %>
-</body>
-</html> -->

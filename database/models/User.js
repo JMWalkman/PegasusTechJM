@@ -46,9 +46,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         },
         authenticated: {
-            type: DataTypes.BOOLEAN,
+            type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: false
+            defaultValue: 'false'
         },
         profile_image: {
             type: DataTypes.STRING,

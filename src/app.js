@@ -11,18 +11,17 @@ const mainRouter = require('./routes/main');
 const productRouter = require('./routes/product');
 // const cartRouter = require('./routes/cart');
 const userRouter = require('./routes/user');
-const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware')
+const cookieAuthMiddleware = require('./middlewares/cookieAuthMiddleware');
 
 //cookie-parser
 app.use(cookies())
-
 app.use(session({
     secret: 'Texto indiferente?',
     resave: false,
     saveUninitialized: false
 }))
 
-app.use(userLoggedMiddleware)
+app.use(cookieAuthMiddleware)
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); // siempre se debe hacer cuando views no esté en raíz
