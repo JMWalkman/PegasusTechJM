@@ -1,53 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('../partials/head') %>
-<head>
-  <link rel="stylesheet" href="/css/userProfile.css" />
-  <form action="/users/logout" method="POST" id="logoutForm"></form>
-</head>
-
 <body>
   <%- include('../partials/header') %>
-  <main class="form-container profile-grid">
-    
-    <section class="form-section user-image">
-      <div>
-        <!-- <img src="../../img/uploads/users/<%= userInfo.profile_image %>"/> -->
-        <img src="<%= userInfo.profile_image %>"/>
-      </div>
-      <h2>Bienvenido</h2>
-      <h1><%= userInfo.first_name + " " + userInfo.last_name %></h1>
-    </section>
-
-    <section class="form-section user-info">
-      <div class="form-field">
-        <p> Correo </p>
-        <h3> <%= userInfo.email %> </h3>
-      </div>
-      <div class="form-field">
-        <p> Teléfono </p>
-        <h3> <%= userInfo.phone %> </h3>
-      </div>
-      <div class="form-field">
-        <p> Dirección </p>
-        <h3> <%= userInfo.address %> </h3>
-      </div>
-      <div class="form-field">
-        <p> Género </p>
-        <h3> <%= userInfo.gender %> </h3>
-      </div>
-    </section>
-
-    <section class="form-section user-edit-button">
-      <a href="../../users/edit"><i class="fa-solid fa-gear"></i></a>
-      <h2>Editar Información</h2>
-    </section>
-
-    <section class="form-section user-log-out">
-      <button type="submit" form="logoutForm" class="icon-button"><i class="fa-solid fa-power-off"></i></button>
-      <h2>Cerrar Sesión</h2>
-    </section>
-  </main>
+  
+  <h2>Bienvenido <%= us.fullName %> </h2>
+  <h3><%= us.email %> </h3>
+  <a href="/users/edit">Editar información</a>
   <%- include('../partials/footer') %>
 </body>
 </html>
