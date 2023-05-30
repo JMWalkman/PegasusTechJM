@@ -1,31 +1,45 @@
-const { DataTypes } = require("sequelize");
+const fs = require('fs');
+const { builtinModules } = require('module');
+const filename = './DB/users.json';
 
-module.exports = (sequelize, DataTypes) => {
-    let alias = 'users';
-    let atributes = {
-        id: { 
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            allowNull: false,
-            autoIncrement: true
-        },
-        nombre: { 
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        email: { 
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-        password: { type: DataTypes.STRING },
+const userWrite = (userInfo) => {
+    let userList = requestUserList();
+    let newUser = { id: idGenerator(), ...userInfo};
+
+    if(!userSearch('email', userInfo.email)) {
+        userList.push(newUser);
+        dataBaseWrite(userList);
     }
-    let config = {
-        tableName: 'users',
-        timestamps: false
-    }
+}
 
-    const User = sequelize.define(alias, atributes, config);
+const userSearch = (field, value) => {
+    let userList = requestUserList()
+    return userList.find(user => user[field] === value)
+}
 
-    return User
+const userErase = (userId) => {
+    let userList = requestUserList().filter(producto => producto.id != userId);
+    dataBaseWrite(userList);
+}
+
+const requestUserList = () => {
+    return JSON.parse(fs.readFileSync(filename, 'utf-8'));
+}
+
+const dataBaseWrite = (info) => {
+    fs.writeFileSync('DB/users.json', JSON.stringify(info, null, ' '));
+}
+
+const idGenerator = () => {
+    let userList = requestUserList();
+    let lastUser = userList.pop();
+
+    return lastUser ? lastUser.id + 1 : 1; // está vacía la tabla?
+}
+
+module.exports = {
+    requestUserList,
+    userSearch,
+    userWrite,
+    userErase
 }
